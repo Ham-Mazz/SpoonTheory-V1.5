@@ -1,0 +1,175 @@
+[gd_scene load_steps=8 format=3 uid="uid://de1i8bwbcmehg"]
+
+[ext_resource type="Script" path="res://Scripts/settings.gd" id="1_csdo8"]
+[ext_resource type="PackedScene" uid="uid://ds06mwhee8ygm" path="res://game_settings/components/slider/slider.tscn" id="2_t5ctw"]
+[ext_resource type="Script" path="res://Scripts/slider.gd" id="3_cl0pb"]
+[ext_resource type="PackedScene" uid="uid://bhkyf3l4ee800" path="res://game_settings/components/checkbox/checkbox.tscn" id="5_sihfs"]
+[ext_resource type="Script" path="res://Scripts/binary_selection.gd" id="5_wo1wj"]
+[ext_resource type="Script" path="res://Scripts/option_list.gd" id="7_e3ynb"]
+[ext_resource type="PackedScene" uid="uid://b7m6l0lvojrsj" path="res://game_settings/components/option_list/option_list.tscn" id="10_v45ja"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_csdo8")
+metadata/_edit_horizontal_guides_ = [315.0, 346.0, 376.0]
+metadata/_edit_vertical_guides_ = [575.0]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Settings backgorund" type="TextureRect" parent="CanvasLayer"]
+offset_right = 1152.0
+offset_bottom = 649.0
+
+[node name="Lables" type="VBoxContainer" parent="CanvasLayer/Settings backgorund"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.089
+anchor_top = 0.134
+anchor_right = 0.391
+anchor_bottom = 0.846
+offset_left = 9.472
+offset_top = 40.034
+offset_right = 35.568
+offset_bottom = 13.946
+pivot_offset = Vector2(128, 126)
+alignment = 1
+
+[node name="Sound" type="Label" parent="CanvasLayer/Settings backgorund/Lables"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Master Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Music" type="Label" parent="CanvasLayer/Settings backgorund/Lables"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Music "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FullScreen" type="Label" parent="CanvasLayer/Settings backgorund/Lables"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Full Screen
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sound4" type="Label" parent="CanvasLayer/Settings backgorund/Lables"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Sound"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sound5" type="Label" parent="CanvasLayer/Settings backgorund/Lables"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Sound"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings backgorund/Lables"]
+layout_mode = 2
+text = "Resolution"
+horizontal_alignment = 1
+
+[node name="sliders_&_buttons" type="VBoxContainer" parent="CanvasLayer/Settings backgorund"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.583
+anchor_top = 0.194
+anchor_right = 0.909
+anchor_bottom = 0.88
+offset_left = -3.61603
+offset_top = 5.09399
+offset_right = -4.16809
+offset_bottom = 4.87994
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(128, 126)
+alignment = 1
+
+[node name="Slider" parent="CanvasLayer/Settings backgorund/sliders_&_buttons" instance=ExtResource("2_t5ctw")]
+layout_mode = 2
+script = ExtResource("3_cl0pb")
+
+[node name="Checkbox4" parent="CanvasLayer/Settings backgorund/sliders_&_buttons" instance=ExtResource("5_sihfs")]
+layout_direction = 2
+layout_mode = 2
+script = ExtResource("5_wo1wj")
+
+[node name="Btn" parent="CanvasLayer/Settings backgorund/sliders_&_buttons/Checkbox4" index="0"]
+text = "On/Off"
+
+[node name="Checkbox" parent="CanvasLayer/Settings backgorund/sliders_&_buttons" instance=ExtResource("5_sihfs")]
+layout_mode = 2
+script = ExtResource("5_wo1wj")
+
+[node name="Btn" parent="CanvasLayer/Settings backgorund/sliders_&_buttons/Checkbox" index="0"]
+text = "On/Off"
+
+[node name="OptionList" parent="CanvasLayer/Settings backgorund/sliders_&_buttons" instance=ExtResource("10_v45ja")]
+layout_mode = 2
+script = ExtResource("7_e3ynb")
+
+[node name="Btn" parent="CanvasLayer/Settings backgorund/sliders_&_buttons/OptionList" index="0"]
+item_count = 5
+popup/item_0/text = "720*1280"
+popup/item_0/id = 1
+popup/item_1/text = "480*640"
+popup/item_1/id = 0
+popup/item_2/text = "1080*1920"
+popup/item_2/id = 2
+popup/item_3/text = "1440*2560"
+popup/item_3/id = 3
+popup/item_4/text = "2160*3840"
+popup/item_4/id = 4
+
+[node name="mainLabel" type="Label" parent="CanvasLayer/Settings backgorund"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.403
+anchor_top = 0.08
+anchor_right = 0.598
+anchor_bottom = 0.176
+offset_left = -0.256042
+offset_top = 0.079998
+offset_right = 0.103943
+offset_bottom = 0.775993
+theme_override_font_sizes/font_size = 20
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Exit" type="Button" parent="CanvasLayer/Settings backgorund"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.412
+anchor_top = 0.726
+anchor_right = 0.585
+anchor_bottom = 0.803
+offset_left = 0.375977
+offset_top = -0.174011
+offset_right = 0.0799561
+offset_bottom = -0.147034
+text = "Back"
+
+[connection signal="pressed" from="CanvasLayer/Settings backgorund/Exit" to="." method="_on_exit_pressed"]
+
+[editable path="CanvasLayer/Settings backgorund/sliders_&_buttons/Slider"]
+[editable path="CanvasLayer/Settings backgorund/sliders_&_buttons/Checkbox4"]
+[editable path="CanvasLayer/Settings backgorund/sliders_&_buttons/Checkbox"]
+[editable path="CanvasLayer/Settings backgorund/sliders_&_buttons/OptionList"]

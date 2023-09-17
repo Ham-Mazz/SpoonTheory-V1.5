@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqeh6b2i3wcxg"]
+
+[ext_resource type="Script" path="res://Scripts/playername.gd" id="1_ikruv"]
+
+[node name="playername" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ikruv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.405
+anchor_top = 0.341
+anchor_right = 0.601
+anchor_bottom = 0.648
+offset_left = -0.560028
+offset_top = 0.0319824
+offset_right = -0.35199
+offset_bottom = 0.0960083
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lable" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Enter your character's name"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Player Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Back" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[node name="Next" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Next"
+
+[connection signal="text_changed" from="VBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Next" to="." method="_on_next_pressed"]
