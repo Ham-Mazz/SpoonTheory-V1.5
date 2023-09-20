@@ -15,11 +15,14 @@ func _process(delta):
 func _on_hard_pressed():
 	#set difficulty to hard
 	difficultiy = 3
+	Global.difficultiy = difficultiy
 
 func _on_normal_pressed():
 	#set difficulty to normal
 	difficultiy = 2
+	Global.difficultiy = difficultiy
 
 func _on_easy_pressed():
 	#set difficulty to easy
 	difficultiy = 1
+	Global.difficultiy = difficultiy

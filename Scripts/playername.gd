@@ -19,3 +19,4 @@ func _on_back_pressed():
 func _on_line_edit_text_changed(new_text):
 	player_name = new_text
 	Dialogic.VAR.Player_Name = player_name
+	Global.player_name = player_name
