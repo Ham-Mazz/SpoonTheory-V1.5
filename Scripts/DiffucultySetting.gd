@@ -13,11 +13,13 @@ func _process(delta):
 
 
 func _on_hard_pressed():
-	pass
-
+	#set difficulty to hard
+	difficultiy = 3
 
 func _on_normal_pressed():
-	pass
+	#set difficulty to normal
+	difficultiy = 2
 
 func _on_easy_pressed():
-	pass
+	#set difficulty to easy
+	difficultiy = 1

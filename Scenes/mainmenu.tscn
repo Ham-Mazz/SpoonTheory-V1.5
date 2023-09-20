@@ -46,7 +46,7 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Title" type="Label" parent="CanvasLayer/Menu Background/VBoxContainer"]
+[node name="GameTitle" type="Label" parent="CanvasLayer/Menu Background/VBoxContainer"]
 layout_mode = 2
 text = "Spoon Theory"
 
