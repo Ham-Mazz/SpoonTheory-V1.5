@@ -26,14 +26,12 @@ func visual_select() -> void:
 
 ## Called by the visual timeline editor
 func visual_deselect() -> void:
-	if !parent_node:return
-	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.3)
+	modulate = parent_node.resource.event_color
 
 
 ## Called by the visual timeline editor
 func highlight() -> void:
-	if !parent_node:return
-	modulate = parent_node.resource.event_color.lerp(get_theme_color("font_color", "Editor"), 0.6)
+	modulate = parent_node.resource.event_color.lightened(0.5)
 
 
 ## Called by the visual timeline editor
@@ -43,11 +41,7 @@ func unhighlight() -> void:
 
 func update_hidden_events_indicator(hidden_events_count:int = 0) -> void:
 	$HiddenEventsLabel.visible = hidden_events_count > 0
-	if hidden_events_count == 1:
-		$HiddenEventsLabel.text = "[1 event hidden]"
-	else:
-		$HiddenEventsLabel.text = "["+str(hidden_events_count)+ " events hidden]"
-
+	$HiddenEventsLabel.text = "["+str(hidden_events_count)+ " events hidden]"
 
 ## Called by the visual timeline editor
 func set_indent(indent: int) -> void:
@@ -63,10 +57,8 @@ func parent_node_changed() -> void:
 		end_control.refresh()
 
 
-## Called on creation if the parent event provides an end control
+## Called on creation of the parent event provides an end control
 func add_end_control(control:Control) -> void:
-	if !control:
-		return
 	add_child(control)
 	control.size_flags_vertical = SIZE_SHRINK_CENTER
 	if "parent_resource" in control:

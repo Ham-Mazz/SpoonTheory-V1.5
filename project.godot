@@ -16,8 +16,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Dialogic="*res://addons/dialogic/Other/DialogicGameHandler.gd"
 Global="*res://Global.gd"
+GGS="*res://addons/ggs/classes/ggs_globals.gd"
+Dialogic="*res://addons/dialogic/Other/DialogicGameHandler.gd"
 
 [dialogic]
 
@@ -41,7 +42,7 @@ text/autopauses={}
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
+enabled=PackedStringArray("res://addons/ggs/plugin.cfg", "res://addons/dialogic/plugin.cfg")
 
 [input]
 

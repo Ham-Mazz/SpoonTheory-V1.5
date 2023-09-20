@@ -4,7 +4,7 @@ extends DialogicEvent
 
 ## Event that allows adding choices. Needs to go after a text event (or another choices EndBranch).
 
-enum ElseActions {HIDE, DISABLE, DEFAULT}
+enum ElseActions {Hide, Disable, Default}
 
 
 ### Settings
@@ -13,7 +13,7 @@ var text :String = ""
 ## If not empty this condition will determine if this choice is active.
 var condition: String = ""
 ## Determines what happens if  [condition] is false. Default will use the action set in the settings.
-var else_action: = ElseActions.DEFAULT
+var else_action: = ElseActions.Default
 ## The text that is displayed if [condition] is false and [else_action] is Disable. 
 ## If empty [text] will be used for disabled button as well.
 var disabled_text: String = ""
@@ -27,10 +27,7 @@ func _execute() -> void:
 	# This event is mostly a placeholder that's used to indicate a position. 
 	# Only the selected choice is reached. 
 	# However mainly the Choices Subsystem queries the events 
-	#   to find the choices that belong to the question.
-	if !dialogic.Choices.last_question_info.has('choices'):
-		finish()
-		return
+	#   to find the choices that belong to the question.  
 	if dialogic.has_subsystem('History'):
 		var all_choices : Array = dialogic.Choices.last_question_info['choices']
 		if dialogic.has_subsystem('VAR'):
@@ -47,7 +44,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Choice"
 	set_default_color('Color3')
-	event_category = "Flow"
+	event_category = "Logic"
 	event_sorting_index = 0
 	can_contain_events = true
 	needs_parent_event = true
@@ -76,9 +73,9 @@ func to_text() -> String:
 	
 	
 	var shortcode = '['
-	if else_action == ElseActions.HIDE:
+	if else_action == ElseActions.Hide:
 		shortcode += 'else="hide"'
-	elif else_action == ElseActions.DISABLE:
+	elif else_action == ElseActions.Disable:
 		shortcode += 'else="disable"'
 	
 	if disabled_text:
@@ -100,9 +97,9 @@ func from_text(string:String) -> void:
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
 		else_action = {
-			'default':ElseActions.DEFAULT, 
-			'hide':ElseActions.HIDE,
-			'disable':ElseActions.DISABLE}.get(shortcode_params.get('else', ''), ElseActions.DEFAULT)
+			'default':ElseActions.Default, 
+			'hide':ElseActions.Hide,
+			'disable':ElseActions.Disable}.get(shortcode_params.get('else', ''), ElseActions.Default)
 		
 		disabled_text = shortcode_params.get('alt_text', '')
 
@@ -135,64 +132,29 @@ func _get_property_original_translation(property:String) -> String:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_edit("text", ValueType.SINGLELINE_TEXT, '','', {'autofocus':true})
-	add_body_edit("condition", ValueType.CONDITION, 'if ')
-	add_body_edit("else_action", ValueType.FIXED_OPTION_SELECTOR, 'else ', '', {
+	add_header_edit("text", ValueType.SinglelineText)
+	add_body_edit("condition", ValueType.Condition, 'if ')
+	add_body_edit("else_action", ValueType.FixedOptionSelector, 'else ', '', {
 		'selector_options': [
 			{
 				'label': 'Default',
-				'value': ElseActions.DEFAULT,
+				'value': ElseActions.Default,
 			},
 			{
 				'label': 'Hide',
-				'value': ElseActions.HIDE,
+				'value': ElseActions.Hide,
 			},
 			{
 				'label': 'Disable',
-				'value': ElseActions.DISABLE,
+				'value': ElseActions.Disable,
 			}
 		]}, '!condition.is_empty()')
-	add_body_edit("disabled_text", ValueType.SINGLELINE_TEXT, 'Disabled text:', '', 
+	add_body_edit("disabled_text", ValueType.SinglelineText, 'Disabled text:', '', 
 			{'placeholder':'(Empty for same)'}, 'allow_alt_text()')
 
 
 func allow_alt_text() -> bool:
 	return condition and (
-		else_action == ElseActions.DISABLE or 
-		(else_action == ElseActions.DEFAULT and 
+		else_action == ElseActions.Disable or 
+		(else_action == ElseActions.Default and 
 		ProjectSettings.get_setting("dialogic/choices/def_false_behaviour", 0) == 1))
-
-
-####################### CODE COMPLETION ########################################
-################################################################################
-
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
-	if !'[' in line:
-		return
-	
-	if symbol == '[':
-		if line.count('[') == 1:
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
-		elif line.count('[') > 1:
-			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'else', 'else="', TextNode.syntax_highlighter.code_flow_color)
-	if symbol == ' ' and '[else' in line:
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'alt_text', 'alt_text="', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
-	elif symbol == '{':
-		CodeCompletionHelper.suggest_variables(TextNode)
-	if (symbol == '=' or symbol == '"') and line.count('[') > 1 and !'" ' in line:
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'default', "default", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'hide', "hide", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'disable', "disable", event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5), null, '"')
-
-
-#################### SYNTAX HIGHLIGHTING #######################################
-################################################################################
-
-func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
-	dict[0] = {'color':event_color}
-	if '[' in line:
-		dict[line.find('[')] = {"color":Highlighter.normal_color}
-		dict = Highlighter.color_word(dict, Highlighter.code_flow_color, line, 'if', line.find('['), line.find(']'))
-		dict = Highlighter.color_condition(dict, line, line.find('['), line.find(']'))
-		dict = Highlighter.color_shortcode_content(dict, line, line.find(']'), 0,event_color)
-	return dict

@@ -5,13 +5,13 @@ extends DialogicEvent
 ## Event that allows moving of positions (and characters that are on that position).
 ## Requires the Portraits subsystem to be present!
 
-enum Actions {SET_RELATIVE, SET_ABSOLUTE, RESET, RESET_ALL}
+enum ActionTypes {SetRelative, SetAbsolute, Reset, ResetAll}
 
 
 ### Settings
 
 ## The type of action: SetRelative, SetAbsolute, Reset, ResetAll
-var action := Actions.SET_RELATIVE
+var action_type := ActionTypes.SetRelative
 ## The position that should be affected
 var position: int = 0
 ## A vector representing a relative change or an absolute position (for SetRelative and SetAbsolute)
@@ -24,14 +24,14 @@ var movement_time: float = 0
 ## 						EXECUTE
 ################################################################################
 func _execute() -> void:
-	match action:
-		Actions.SET_RELATIVE:
+	match action_type:
+		ActionTypes.SetRelative:
 			dialogic.Portraits.move_portrait_position(position, vector, true, movement_time)
-		Actions.SET_ABSOLUTE:
+		ActionTypes.SetAbsolute:
 			dialogic.Portraits.move_portrait_position(position, vector, false, movement_time)
-		Actions.RESET_ALL:
+		ActionTypes.ResetAll:
 			dialogic.Portraits.reset_portrait_positions(movement_time)
-		Actions.RESET:
+		ActionTypes.Reset:
 			dialogic.Portraits.reset_portrait_position(position, movement_time)
 	
 	finish()
@@ -64,7 +64,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"action"		:  {"property": "action", 		"default": Actions.SET_RELATIVE, 
+		"action"		:  {"property": "action_type", 		"default": ActionTypes.SetRelative, 
 								"suggestions": func(): return {"Set Relative":{'value':'0'}, "Set Absolute":{'value':'1'}, "Reset":{'value':'2'}, "Reset All":{'value':'3'}}},
 		"position"		:  {"property": "position", 		"default": 0},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},
@@ -77,30 +77,30 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('action_type', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
 				'label': 'Change',
-				'value': Actions.SET_RELATIVE,
+				'value': ActionTypes.SetRelative,
 			},
 			{
 				'label': 'Set',
-				'value': Actions.SET_ABSOLUTE,
+				'value': ActionTypes.SetAbsolute,
 			},
 			{
 				'label': 'Reset',
-				'value': Actions.RESET,
+				'value': ActionTypes.Reset,
 			},
 			{
 				'label': 'Reset All',
-				'value': Actions.RESET_ALL,
+				'value': ActionTypes.ResetAll,
 			}
 		]
 		})
-	add_header_edit("position", ValueType.INTEGER, "position", '', {}, 
-			'action != Actions.RESET_ALL')
-	add_header_label('to (absolute)', 'action == Actions.SET_ABSOLUTE')
-	add_header_label('by (relative)', 'action == Actions.SET_RELATIVE')
-	add_header_edit("vector", ValueType.VECTOR2, "", '', {}, 
-			'action != Actions.RESET and action != Actions.RESET_ALL')
-	add_body_edit("movement_time", ValueType.FLOAT, "AnimationTime:", "(0 for instant)")
+	add_header_edit("position", ValueType.Integer, "position", '', {}, 
+			'action_type != ActionTypes.ResetAll')
+	add_header_label('to (absolute)', 'action_type == ActionTypes.SetAbsolute')
+	add_header_label('by (relative)', 'action_type == ActionTypes.SetRelative')
+	add_header_edit("vector", ValueType.Vector2, "", '', {}, 
+			'action_type != ActionTypes.Reset and action_type != ActionTypes.ResetAll')
+	add_body_edit("movement_time", ValueType.Float, "AnimationTime:", "(0 for instant)")

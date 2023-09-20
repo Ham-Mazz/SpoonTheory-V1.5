@@ -4,11 +4,11 @@ extends DialogicEvent
 
 ## Event that allows branching a timeline based on a condition.
 
-enum ConditionTypes {IF, ELIF, ELSE}
+enum ConditionTypes {If, Elif, Else}
 
 ### Settings
 ## condition type (see [ConditionTypes]). Defaults to if.
-var condition_type := ConditionTypes.IF
+var condition_type := ConditionTypes.If
 ## The condition as a string. Will be executed as an Expression.
 var condition: String = ""
 
@@ -18,7 +18,7 @@ var condition: String = ""
 ################################################################################
 
 func _execute() -> void:
-	if condition_type == ConditionTypes.ELSE:
+	if condition_type == ConditionTypes.Else:
 		finish()
 		return
 	
@@ -44,7 +44,7 @@ func _execute() -> void:
 ## only called if the previous event was an end-branch event
 ## return true if this event should be executed if the previous event was an end-branch event
 func should_execute_this_branch() -> bool:
-	return condition_type == ConditionTypes.IF
+	return condition_type == ConditionTypes.If
 
 
 ################################################################################
@@ -54,8 +54,8 @@ func should_execute_this_branch() -> bool:
 func _init() -> void:
 	event_name = "Condition"
 	set_default_color('Color3')
-	event_category = "Flow"
-	event_sorting_index = 1
+	event_category = "Logic"
+	event_sorting_index = 0
 	can_contain_events = true
 	continue_at_end = true
 
@@ -72,11 +72,11 @@ func to_text() -> String:
 	var result_string := ""
 	
 	match condition_type:
-		ConditionTypes.IF:
+		ConditionTypes.If:
 			result_string = 'if '+condition+':'
-		ConditionTypes.ELIF:
+		ConditionTypes.Elif:
 			result_string = 'elif '+condition+':'
-		ConditionTypes.ELSE:
+		ConditionTypes.Else:
 			result_string = 'else:'
 	
 	return result_string
@@ -85,17 +85,17 @@ func to_text() -> String:
 func from_text(string:String) -> void:
 	if string.strip_edges().begins_with('if'):
 		condition = string.strip_edges().trim_prefix('if ').trim_suffix(':').strip_edges()
-		condition_type = ConditionTypes.IF
+		condition_type = ConditionTypes.If
 	elif string.strip_edges().begins_with('elif'):
 		condition = string.strip_edges().trim_prefix('elif ').trim_suffix(':').strip_edges()
-		condition_type = ConditionTypes.ELIF
+		condition_type = ConditionTypes.Elif
 	elif string.strip_edges().begins_with('else'):
 		condition = ""
-		condition_type = ConditionTypes.ELSE
+		condition_type = ConditionTypes.Else
 
 
 func is_valid_event(string:String) -> bool:
-	if string.strip_edges() in ['if', 'elif', 'else'] or (string.strip_edges().begins_with('if ') or string.strip_edges().begins_with('elif ') or string.strip_edges().begins_with('else')):
+	if (string.strip_edges().begins_with('if ') or string.strip_edges().begins_with('elif ') or string.strip_edges().begins_with('else')) and string.strip_edges().ends_with(':'):
 		return true
 	return false
 
@@ -105,45 +105,19 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('condition_type', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('condition_type', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
 				'label': 'IF',
-				'value': ConditionTypes.IF,
+				'value': ConditionTypes.If,
 			},
 			{
 				'label': 'ELIF',
-				'value': ConditionTypes.ELIF,
+				'value': ConditionTypes.Elif,
 			},
 			{
 				'label': 'ELSE',
-				'value': ConditionTypes.ELSE,
+				'value': ConditionTypes.Else,
 			}
 		], 'disabled':true})
-	add_header_edit('condition', ValueType.CONDITION, '', '', {}, 'condition_type != %s'%ConditionTypes.ELSE)
-
-
-####################### CODE COMPLETION ########################################
-################################################################################
-
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
-	if (line.begins_with('if') or line.begins_with('elif')) and symbol == '{':
-		CodeCompletionHelper.suggest_variables(TextNode)
-
-
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'if', 'if ', TextNode.syntax_highlighter.code_flow_color)
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'elif', 'elif ', TextNode.syntax_highlighter.code_flow_color)
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'else', 'else:\n	', TextNode.syntax_highlighter.code_flow_color)
-
-
-#################### SYNTAX HIGHLIGHTING #######################################
-################################################################################
-
-
-func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
-	var word := line.get_slice(' ', 0)
-	dict[line.find(word)] = {"color":Highlighter.code_flow_color}
-	dict[line.find(word)+len(word)] = {"color":Highlighter.normal_color}
-	dict = Highlighter.color_condition(dict, line)
-	return dict
+	add_header_edit('condition', ValueType.Condition, '', '', {}, 'condition_type != %s'%ConditionTypes.Else)

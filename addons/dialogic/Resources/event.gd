@@ -67,8 +67,6 @@ var disable_editor_button: bool = false
 var expand_by_default : bool = true
 ## The URL to open when right_click>Documentation is selected 
 var help_page_path : String = ""
-## Is the event block created by a button?
-var created_by_button : bool = false
 
 ## Reference to the node, that represents this event. Only works while in visual editor mode.
 ## Use with care.
@@ -81,24 +79,24 @@ var event_category:String = "Other"
 ### Editor UI creation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## To differentiate fields that should go to the header and to the body
-enum Location {HEADER, BODY}
+enum Location {Header, Body}
 
 ## To differentiate the different types of fields for event properties in the visual editor
 enum ValueType {
 	# Strings
-	LABEL, MULTILINE_TEXT, SINGLELINE_TEXT, CONDITION,
+	Label, MultilineText, SinglelineText, Condition,
 	# Booleans
-	BOOL,
+	Bool,
 	# Resources
-	COMPLEX_PICKER, FILE,
+	ComplexPicker, File,
 	# Array
-	STRING_ARRAY,
+	StringArray,
 	# Integers
-	FIXED_OPTION_SELECTOR, INTEGER, VECTOR2,
+	FixedOptionSelector, Integer, Vector2,
 	# Floats
-	FLOAT, DECIBEL,
+	Float, Decibel,
 	# Other
-	CUSTOM, BUTTON,
+	Custom, Button,
 }
 ## List that stores the fields for the editor
 var editor_list : Array = []
@@ -221,7 +219,7 @@ func update_text_version() -> void:
 	event_node_as_text = _store_as_string()
 
 
-## Used by timeline processor.
+## Used by timeline processor (DGH).
 func _load_from_string(string:String) -> void:
 	_load_custom_defaults()
 	if '#id:' in string and can_be_translated():
@@ -239,7 +237,7 @@ func _load_custom_defaults():
 			set(default_prop, DialogicUtil.get_custom_event_defaults(event_name)[default_prop])
 
 
-## Used by the timeline processor.
+## Used by the timeline processor (DGH).
 func _test_event_string(string:String) -> bool:
 	if '#id:' in string and can_be_translated():
 		return is_valid_event(string.get_slice('#id:', 0)) 
@@ -268,8 +266,7 @@ func to_text() -> String:
 	var params : Dictionary = get_shortcode_parameters()
 	var custom_defaults :Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 	for parameter in params.keys():
-		if (typeof(get(params[parameter].property)) != typeof(custom_defaults.get(params[parameter].property, params[parameter].default))) or \
-		(get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default)):
+		if get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default):
 			if typeof(get(params[parameter]["property"])) == TYPE_OBJECT:
 				result_string += " "+parameter+'="'+str(get(params[parameter]["property"]).resource_path)+'"'
 			elif typeof(get(params[parameter]["property"])) == TYPE_STRING:
@@ -345,28 +342,6 @@ func set_default_color(value) -> void:
 	event_color = DialogicUtil.get_color(value)
 
 
-####################### CODE COMPLETION ########################################
-################################################################################
-
-## This method can be overwritten to implement code completion for custom syntaxes
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
-	pass
-
-## This method can be overwritten to add starting suggestions for this event
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
-	pass
-
-
-#################### SYNTAX HIGHLIGHTING #######################################
-################################################################################
-
-func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
-	return dict
-
-
-#################### EVENT FIELDS ##############################################
-################################################################################
-
 func get_event_editor_info() -> Array:
 	if Engine.is_editor_hint():
 		if editor_list != null:
@@ -396,20 +371,20 @@ func build_event_editor() -> void:
 func add_header_label(text:String, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: "something", 
-		"type" 			:+ TYPE_STRING,
-		"location" 		: Location.HEADER,
+		"type" 			: TYPE_STRING,
+		"location" 		: Location.Header,
 		"usage" 		: PROPERTY_USAGE_EDITOR,
-		"dialogic_type" : ValueType.LABEL,
+		"dialogic_type" : ValueType.Label,
 		"display_info"  : {"text":text}, 
 		"condition" 	: condition
 		})
 
 
-func add_header_edit(variable:String, editor_type = ValueType.LABEL, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: variable,
 		"type" 			: typeof(get(variable)),
-		"location" 		: Location.HEADER,
+		"location" 		: Location.Header,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
 		"dialogic_type" : editor_type,
 		"display_info" 	: extra_info,
@@ -423,19 +398,19 @@ func add_header_button(text:String, callable:Callable, tooltip:String, icon: Var
 	editor_list.append({
 		"name"			: "Button",
 		"type" 			: TYPE_STRING,
-		"location" 		: Location.HEADER,
+		"location" 		: Location.Header,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
-		"dialogic_type" : ValueType.BUTTON,
+		"dialogic_type" : ValueType.Button,
 		"display_info" 	: {'text':text, 'tooltip':tooltip, 'callable':callable, 'icon':icon},
 		"condition" 	: condition,
 	})
 
 
-func add_body_edit(variable:String, editor_type = ValueType.LABEL, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:
+func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name" 			: variable, 
 		"type" 			: typeof(get(variable)),
-		"location" 		: Location.BODY,
+		"location" 		: Location.Body,
 		"usage" 		: PROPERTY_USAGE_DEFAULT,
 		"dialogic_type" : editor_type,
 		"display_info" 	: extra_info,
@@ -449,7 +424,7 @@ func add_body_line_break(condition:String = "") -> void:
 	editor_list.append({
 		"name" 		: "linebreak",
 		"type" 		: TYPE_BOOL,
-		"location" 	: Location.BODY,
+		"location" 	: Location.Body,
 		"usage" 	: PROPERTY_USAGE_DEFAULT,
 		"condition" : condition,
 		})

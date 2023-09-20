@@ -11,11 +11,11 @@ signal resource_unsaved()
 var current_resource: Resource
 
 ## State of the current resource
-enum ResourceStates {SAVED, UNSAVED}
+enum ResourceStates {Saved, Unsaved}
 var current_resource_state: ResourceStates:
 	set(value):
 		current_resource_state = value
-		if value == ResourceStates.SAVED:
+		if value == ResourceStates.Saved:
 			resource_saved.emit()
 		else:
 			resource_unsaved.emit()
@@ -27,15 +27,6 @@ var alternative_text: String = ""
 ## Overwrite. Register to the editor manager in here.
 func _register() -> void:
 	pass
-
-
-## Used on the tab
-func _get_icon() -> Texture:
-	return null
-
-## Used on the tab
-func _get_title() -> String:
-	return ""
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)

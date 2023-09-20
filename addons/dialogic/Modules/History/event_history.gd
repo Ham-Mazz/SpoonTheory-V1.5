@@ -4,12 +4,12 @@ extends DialogicEvent
 
 ## Event that allows clearing, pausing and resuming of history functionality.
 
-enum Actions {CLEAR, PAUSE, RESUME}
+enum ActionTypes {Clear, Pause, Resume}
 
 ### Settings
 
 ## The type of action: Clear, Pause or Resume
-var action := Actions.PAUSE
+var action_type := ActionTypes.Pause
 
 
 ################################################################################
@@ -17,12 +17,12 @@ var action := Actions.PAUSE
 ################################################################################
 
 func _execute() -> void:
-	match action:
-		Actions.CLEAR:
+	match action_type:
+		ActionTypes.Clear:
 			dialogic.History.full_history = []
-		Actions.PAUSE:
+		ActionTypes.Pause:
 			dialogic.History.full_history_enabled = false
-		Actions.RESUME:
+		ActionTypes.Resume:
 			dialogic.History.full_history_enabled = true
 	
 	finish()
@@ -34,7 +34,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "History"
-	set_default_color('Color9')
+	set_default_color('Color6')
 	event_category = "Other"
 	event_sorting_index = 20
 	expand_by_default = false
@@ -50,7 +50,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 		: property_info
-		"action" 			: {"property": "action", "default": Actions.PAUSE, 
+		"action" 			: {"property": "action_type", "default": ActionTypes.Pause, 
 								"suggestions": func(): return {"Clear":{'value':'0'}, "Pause":{'value':'1'}, "Resume":{'value':'2'}}},
 	}
 
@@ -59,19 +59,19 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('action', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('action_type', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
 				'label': 'Pause History',
-				'value': Actions.PAUSE,
+				'value': ActionTypes.Pause,
 			},
 			{
 				'label': 'Resume History',
-				'value': Actions.RESUME,
+				'value': ActionTypes.Resume,
 			},
 			{
 				'label': 'Clear History',
-				'value': Actions.CLEAR,
+				'value': ActionTypes.Clear,
 			},
 		]
 		})

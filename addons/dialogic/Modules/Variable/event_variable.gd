@@ -5,17 +5,17 @@ extends DialogicEvent
 ## Event that allows changing a dialogic variable or a property of an autoload.
 
 
-enum Operations {SET, ADD, SUBSTRACT, MULTIPLY, DIVIDE}
+enum Operations {Set, Add, Substract, Multiply, Divide}
 
 ## Settings
 
 ## Name/Path of the variable that should be changed.
 var name: String = ""
 ## The operation to perform.
-var operation: int = Operations.SET:
+var operation: int = Operations.Set:
 	set(value):
 		operation = value
-		if operation != Operations.SET and _value_type == 0:
+		if operation != Operations.Set and _value_type == 0:
 			_value_type = 1
 			ui_update_needed.emit()
 		update_editor_warning()
@@ -46,20 +46,20 @@ func _execute() -> void:
 				2: the_value = dialogic.VAR.get_variable('{'+value+'}')
 				1,3,4: the_value = dialogic.VAR.get_variable(value)
 			
-			if operation != Operations.SET and str(orig).is_valid_float() and str(the_value).is_valid_float():
+			if operation != Operations.Set and str(orig).is_valid_float() and str(the_value).is_valid_float():
 				orig = float(orig)
 				the_value = float(the_value)
 				match operation:
-					Operations.ADD:
+					Operations.Add:
 						dialogic.VAR.set_variable(name, orig+the_value)
-					Operations.SUBSTRACT:
+					Operations.Substract:
 						dialogic.VAR.set_variable(name, orig-the_value)
-					Operations.MULTIPLY:
+					Operations.Multiply:
 						dialogic.VAR.set_variable(name, orig*the_value)
-					Operations.DIVIDE:
+					Operations.Divide:
 						dialogic.VAR.set_variable(name, orig/the_value)
 				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
-			elif operation == Operations.SET:
+			elif operation == Operations.Set:
 				dialogic.VAR.set_variable(name, the_value)
 				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
 			else:
@@ -76,7 +76,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Set Variable"
-	set_default_color('Color6')
+	set_default_color('Color3')
 	event_category = "Logic"
 	event_sorting_index = 0
 	expand_by_default = false
@@ -91,15 +91,15 @@ func to_text() -> String:
 	if name:
 		string += "{" + name + "}"
 		match operation:
-			Operations.SET:
+			Operations.Set:
 				string+= " = "
-			Operations.ADD:
+			Operations.Add:
 				string+= " += "
-			Operations.SUBSTRACT:
+			Operations.Substract:
 				string+= " -= "
-			Operations.MULTIPLY:
+			Operations.Multiply:
 				string+= " *= "
-			Operations.DIVIDE:
+			Operations.Divide:
 				string+= " /= "
 		
 		value = str(value)
@@ -125,15 +125,15 @@ func from_text(string:String) -> void:
 	name = result.get_string('name').strip_edges().replace("{", "").replace("}", "")
 	match result.get_string('operation').strip_edges():
 		'=':
-			operation = Operations.SET
+			operation = Operations.Set
 		'-=':
-			operation = Operations.SUBSTRACT
+			operation = Operations.Substract
 		'+=':
-			operation = Operations.ADD
+			operation = Operations.Add
 		'*=':
-			operation = Operations.MULTIPLY
+			operation = Operations.Multiply
 		'/=':
-			operation = Operations.DIVIDE
+			operation = Operations.Divide
 	
 	if result.get_string('value'):
 		value = result.get_string('value').strip_edges()
@@ -166,37 +166,37 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.COMPLEX_PICKER, 'Set', '', 
+	add_header_edit('name', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func' 	: get_var_suggestions, 
-			'icon' 					: load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
+			'editor_icon' 			: ["ClassList", "EditorIcons"],
 			'placeholder'			:'Select Variable'}
 			)
-	add_header_edit('operation', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('operation', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
 				'label': 'to be',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/set.svg"),
-				'value': Operations.SET
+				'value': Operations.Set
 			},{
 				'label': 'to itself plus',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/plus.svg"),
-				'value': Operations.ADD
+				'value': Operations.Add
 			},{
 				'label': 'to itself minus',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/minus.svg"),
-				'value': Operations.SUBSTRACT
+				'value': Operations.Substract
 			},{
 				'label': 'to itself multiplied by',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/multiply.svg"),
-				'value': Operations.MULTIPLY
+				'value': Operations.Multiply
 			},{
 				'label': 'to itself divided by',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/divide.svg"),
-				'value': Operations.DIVIDE
+				'value': Operations.Divide
 			}
 		]
 	}, '!name.is_empty()')
-	add_header_edit('_value_type', ValueType.FIXED_OPTION_SELECTOR, '', '', {
+	add_header_edit('_value_type', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
 				'label': 'String',
@@ -208,7 +208,7 @@ func build_event_editor():
 				'value': 1
 			},{
 				'label': 'Variable',
-				'icon': load("res://addons/dialogic/Editor/Images/Pieces/variable.svg"),
+				'icon': ["ClassList", "EditorIcons"],
 				'value': 2
 			},{
 				'label': 'Expression',
@@ -221,14 +221,14 @@ func build_event_editor():
 			}],
 		'symbol_only':true}, 
 		'!name.is_empty()')
-	add_header_edit('value', ValueType.SINGLELINE_TEXT, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
-	add_header_edit('value', ValueType.FLOAT, '', '', {}, '!name.is_empty()  and _value_type == 1')
-	add_header_edit('value', ValueType.COMPLEX_PICKER, '', '', 
-			{'suggestions_func' : get_value_suggestions, 'placeholder':'Select Variable'}, 
+	add_header_edit('value', ValueType.SinglelineText, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
+	add_header_edit('value', ValueType.Float, '', '', {}, '!name.is_empty()  and _value_type == 1')
+	add_header_edit('value', ValueType.ComplexPicker, '', '', 
+			{'suggestions_func' : get_value_suggestions}, 
 			'!name.is_empty() and _value_type == 2')
 	add_header_label('a number between', '_value_type == 4')
-	add_header_edit('random_min', ValueType.INTEGER, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
-	add_header_edit('random_max', ValueType.INTEGER, '', '', {}, '!name.is_empty() and _value_type == 4')
+	add_header_edit('random_min', ValueType.Integer, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
+	add_header_edit('random_max', ValueType.Integer, '', '', {}, '!name.is_empty() and _value_type == 4')
 	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["ExternalLink", "EditorIcons"])
 
 func get_var_suggestions(filter:String) -> Dictionary:
@@ -238,7 +238,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
-		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
+		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
 
@@ -247,7 +247,7 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	
 	var vars: Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
-		suggestions[var_path] = {'value':var_path, 'icon':load("res://addons/dialogic/Editor/Images/Pieces/variable.svg")}
+		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
 
@@ -258,33 +258,7 @@ func _on_variable_editor_pressed():
 
 
 func update_editor_warning() -> void:
-	if _value_type == 0 and operation != Operations.SET:
+	if _value_type == 0 and operation != Operations.Set:
 		ui_update_warning.emit('You cannot do this operation with a string!')
 	else:
 		ui_update_warning.emit('')
-
-
-
-####################### CODE COMPLETION ########################################
-################################################################################
-
-func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, word:String, symbol:String) -> void:
-	if CodeCompletionHelper.get_line_untill_caret(line) == 'VAR ':
-		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, '{', '{', TextNode.syntax_highlighter.variable_color)
-	if symbol == '{':
-		CodeCompletionHelper.suggest_variables(TextNode)
-
-
-func _get_start_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
-	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'VAR', 'VAR ', event_color.lerp(TextNode.syntax_highlighter.normal_color, 0.5))
-	
-
-#################### SYNTAX HIGHLIGHTING #######################################
-################################################################################
-
-func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
-	dict[line.find('VAR')] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
-	dict[line.find('VAR')+3] = {"color":Highlighter.normal_color}
-	dict = Highlighter.color_region(dict, Highlighter.string_color, line, '"', '"', line.find('VAR'))
-	dict = Highlighter.color_region(dict, Highlighter.variable_color, line, '{', '}', line.find('VAR'))
-	return dict
