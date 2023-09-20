@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DialogicCharacter" load_steps=2 format=3 uid="uid://dj6wkaynevgso"]
+[gd_resource type="Resource" script_class="DialogicCharacter" load_steps=2 format=3 uid="uid://dykf1j17ct5mo"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Resources/character.gd" id="1_qsljv"]
 
@@ -18,3 +18,4 @@ portraits = {
 }
 }
 custom_info = {}
+metadata/timeline_not_saved = true
