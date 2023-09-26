@@ -1,0 +1,17 @@
+(Wake Up) You rise from your bed
+# First choice ahead
+you wonder why this doesnt work
+- take a shower
+	VAR {spoons} -= 2
+	You took a nice, warm, relaxing shower.
+- do not take a shower
+	You did not take a shower, you smell horrid.
+# #second choice ahead
+you start to feel hungry, what do you want to do
+- make and eat breakfest
+	VAR {spoons} -= 3
+	you made a scrumptious meal
+	# #maybe a random meal selection array to pick from?
+- skip breakfest
+	you decide to spend the day on an empty stomach, let's hope lunch is soon!
+# #travel to work
