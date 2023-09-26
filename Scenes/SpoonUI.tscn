@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://henupq14w5b"]
+[gd_scene load_steps=3 format=3 uid="uid://henupq14w5b"]
 
 [ext_resource type="Texture2D" uid="uid://bj6qc1jjqfqe5" path="res://Assest/spoon.png" id="2_rvyb0"]
+[ext_resource type="Script" path="res://Scenes/SpoonCount.gd" id="2_tpooq"]
 
 [node name="SpoonUI" type="Control"]
 layout_mode = 3
@@ -27,4 +28,4 @@ expand_mode = 3
 [node name="SpoonCount" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 text = "35"
-script = ExtResource("2_rvyb0")
+script = ExtResource("2_tpooq")
