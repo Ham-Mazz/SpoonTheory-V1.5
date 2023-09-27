@@ -27,7 +27,7 @@ You begrudgingly clock out. Grabbing your small lunch.
 - Eat in your cubicle
 	You sit back down in your desk, open your small packed lunch and start eating, alone.
 # Work choice ahead (fourth)
-<Empty Text Event>
+
 - Finish all your work for the day
 	VAR {spoons} -= 10
 	After lunch, you focus and manage to get all your work finished somehow.
@@ -35,3 +35,4 @@ You begrudgingly clock out. Grabbing your small lunch.
 	VAR {spoons} -= 5
 	VAR {social_points} -= 2
 	After lunch, you scroll through tiktoks and decide that the work on your desk can be done tommorow. Your coworkers are not impressed with the amount of work you left behind
+
