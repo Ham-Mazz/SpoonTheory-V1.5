@@ -51,6 +51,7 @@ layout_mode = 2
 text = "Spoon Theory"
 
 [node name="Start" type="Button" parent="CanvasLayer/Menu Background/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Start"
 

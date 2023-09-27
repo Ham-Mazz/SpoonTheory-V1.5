@@ -2,7 +2,7 @@ extends Node
 
 var difficulty : int # Can be set to 1 (easy), 2 (normal), or 3 (hard).
 var max_diff_spoons : int
-var spoons : int
+var spoons : float
 var overspent_spoons: int
 var max_dif_social_points : int
 var social_points : int

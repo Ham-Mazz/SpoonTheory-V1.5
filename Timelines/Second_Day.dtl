@@ -1,0 +1,8 @@
+main_character2: Day 2 started!
+Join main_character2
+main_character2: I just woke up should I take a shower?
+- No
+	main_character2: Next Time
+- Yes [if 0 == 0]
+	main_character2: ahh That was refreshing
+main_character2: <Empty Text Event>

@@ -25,8 +25,13 @@ GGS="*res://addons/ggs/classes/ggs_globals.gd"
 
 glossary/default_case_sensitive=true
 variables={
+<<<<<<< HEAD
+"social_points": "Global.social_points",
+"spoons": "Global.spoons"
+=======
 "social_points": "global.social_points",
 "spoons": "global.spoons"
+>>>>>>> 89af0f55703baaf44186cac14b1353722d3d4a2c
 }
 settings/text_speed=0.01
 text/skippable=true
