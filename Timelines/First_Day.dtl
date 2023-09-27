@@ -1,17 +1,37 @@
 (Wake Up) You rise from your bed
-# First choice ahead
+# shower choice ahead (first)
 you wonder why this doesnt work
 - take a shower
 	VAR {spoons} -= 2
 	You took a nice, warm, relaxing shower.
 - do not take a shower
 	You did not take a shower, you smell horrid.
-# #second choice ahead
+# #breakfest choice ahead (second)
 you start to feel hungry, what do you want to do
 - make and eat breakfest
-	VAR {spoons} -= 3
-	you made a scrumptious meal
+	you made a scrumptious meal, (minus two spoons)
 	# #maybe a random meal selection array to pick from?
-- skip breakfest
-	you decide to spend the day on an empty stomach, let's hope lunch is soon!
+- skip breakfest instead
+	you skip breakfest, lets hope you don't get too hungry
 # #travel to work
+You head outside of your house and take the bus to your work
+As you board the bus, the driver looks at you expectantly (spoons minus 5)
+VAR {spoons} -= 5
+You arrive at work and sit down in your small, cramped, dusty cubicle. You already wish the work day was over.
+# Lunch choice ahead (third)
+Eventually, you hear a knock on the wall of your cubicle. It's your boss Colton.
+Hey , (character name), take your lunch, before you forget to, and remember to clock out for it as well.
+You begrudgingly clock out. Grabbing your small lunch.
+- Eat with your co-worker
+	You sit down with (character), and having a amazing lunch break. You talk with (character) about (stuff).
+- Eat in your cubicle
+	You sit back down in your desk, open your small packed lunch and start eating, alone.
+# Work choice ahead (fourth)
+<Empty Text Event>
+- Finish all your work for the day
+	VAR {spoons} -= 10
+	After lunch, you focus and manage to get all your work finished somehow.
+- Take a break, resulting in you being unable to finish your work
+	VAR {spoons} -= 5
+	VAR {social_points} -= 2
+	After lunch, you scroll through tiktoks and decide that the work on your desk can be done tommorow. Your coworkers are not impressed with the amount of work you left behind
