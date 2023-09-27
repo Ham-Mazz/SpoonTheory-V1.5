@@ -24,7 +24,10 @@ GGS="*res://addons/ggs/classes/ggs_globals.gd"
 [dialogic]
 
 glossary/default_case_sensitive=true
-variables={}
+variables={
+"social_points": "Global.social_points",
+"spoons": "Global.spoons"
+}
 settings/text_speed=0.01
 text/skippable=true
 text/skippable_delay=0.1
