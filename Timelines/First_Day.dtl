@@ -13,7 +13,7 @@ you start to feel hungry, what do you want to do
 	# #maybe a random meal selection array to pick from?
 - skip breakfest instead
 	you skip breakfest, lets hope you don't get too hungry
-# #travel to work
+# travel to work
 You head outside of your house and take the bus to your work
 As you board the bus, the driver looks at you expectantly (spoons minus 5)
 VAR {spoons} -= 5
@@ -27,7 +27,7 @@ You begrudgingly clock out. Grabbing your small lunch.
 - Eat in your cubicle
 	You sit back down in your desk, open your small packed lunch and start eating, alone.
 # Work choice ahead (fourth)
-
+After throwing away the food you didnt finish, you slowly get back to your work, how focused do you feel like being?
 - Finish all your work for the day
 	VAR {spoons} -= 10
 	After lunch, you focus and manage to get all your work finished somehow.
@@ -35,4 +35,8 @@ You begrudgingly clock out. Grabbing your small lunch.
 	VAR {spoons} -= 5
 	VAR {social_points} -= 2
 	After lunch, you scroll through tiktoks and decide that the work on your desk can be done tommorow. Your coworkers are not impressed with the amount of work you left behind
+# travel to work
+You pack up for the day 
+As you board the bus, the driver looks at you expectantly (spoons minus 5)
+VAR {spoons} -= 5
 
