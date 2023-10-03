@@ -35,8 +35,30 @@ After throwing away the food you didnt finish, you slowly get back to your work,
 	VAR {spoons} -= 5
 	VAR {social_points} -= 2
 	After lunch, you scroll through tiktoks and decide that the work on your desk can be done tommorow. Your coworkers are not impressed with the amount of work you left behind
-# travel to work
-You pack up for the day 
+# bus to home
+You pack up for the day
 As you board the bus, the driver looks at you expectantly (spoons minus 5)
 VAR {spoons} -= 5
-
+# Get food choice ahead (fifth)
+As the bus rumbles along, you realizes you have nothing to make at home
+- go to the store and get groceries
+	VAR {spoons} -= 5
+	after you get grocies, do you invite a friend over to help cook and hangout with?
+	- Invite a friend over
+		you invite a friend over and have some food together
+		VAR {spoons} -= 2
+		VAR {social_points} += 2
+	- Eat Alone
+		you eat alone, what a loner
+- Grab some fast food
+	You grab, some quick, filling food  
+	VAR {spoons} -= 2
+# #seventh and last choice, nightly activity
+after you finish eating, do you choose to just relax or get something more productive done?
+- Watch TV
+	you plop onto the couch, grab the remote and pick the first romance story you can find
+- do the damn laundry
+	you wash and fold the laundry, so you have something clean to wear tommorow
+	VAR {spoons} -= 2
+after all that you've done today, you get tired so you go to bed.
+[end_timeline]
