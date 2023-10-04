@@ -1,12 +1,14 @@
+[background arg="res://Assets/Images/Bedroom Reference.jpg"]
 (Wake Up) You rise from your bed
+as you walk to the kitchen, you wonder if you should take a quick shower
 # shower choice ahead (first)
-you wonder why this doesnt work
+as you walk to the kitchen, you wonder if you should take a quick shower
 - take a shower
 	VAR {spoons} -= 2
 	You took a nice, warm, relaxing shower.
 - do not take a shower
 	You did not take a shower, you smell horrid.
-# #breakfest choice ahead (second)
+#breakfest choice ahead (second)
 you start to feel hungry, what do you want to do
 - make and eat breakfest
 	you made a scrumptious meal, (minus two spoons)
@@ -15,7 +17,10 @@ you start to feel hungry, what do you want to do
 	you skip breakfest, lets hope you don't get too hungry
 # travel to work
 You head outside of your house and take the bus to your work
+[background arg="res://Assets/Images/Bus Reference 3.jpg"]
 As you board the bus, the driver looks at you expectantly (spoons minus 5)
+[wait time="1"]
+[background arg="res://Assets/Images/Bus Reference Image.jpg"]
 VAR {spoons} -= 5
 You arrive at work and sit down in your small, cramped, dusty cubicle. You already wish the work day was over.
 # Lunch choice ahead (third)
@@ -38,11 +43,16 @@ After throwing away the food you didnt finish, you slowly get back to your work,
 # bus to home
 You pack up for the day
 As you board the bus, the driver looks at you expectantly (spoons minus 5)
+[background arg="res://Assets/Images/Bus Reference 3.jpg"]
+[wait time="1"]
+[background arg="res://Assets/Images/Bus Reference Image.jpg"]
 VAR {spoons} -= 5
 # Get food choice ahead (fifth)
 As the bus rumbles along, you realizes you have nothing to make at home
 - go to the store and get groceries
 	VAR {spoons} -= 5
+	you go to the store and grab some ingredients to make dinner tonight
+	[background arg="res://Assets/Images/Grocery Store Reference.jpg"]
 	after you get grocies, do you invite a friend over to help cook and hangout with?
 	- Invite a friend over
 		you invite a friend over and have some food together
@@ -51,7 +61,8 @@ As the bus rumbles along, you realizes you have nothing to make at home
 	- Eat Alone
 		you eat alone, what a loner
 - Grab some fast food
-	You grab, some quick, filling food  
+	You grab, some quick, filling food at a local diner
+	[background arg="res://Assets/Images/Diner Reference Image.jpg"]  
 	VAR {spoons} -= 2
 # #seventh and last choice, nightly activity
 after you finish eating, do you choose to just relax or get something more productive done?
@@ -60,5 +71,7 @@ after you finish eating, do you choose to just relax or get something more produ
 - do the damn laundry
 	you wash and fold the laundry, so you have something clean to wear tommorow
 	VAR {spoons} -= 2
+[background arg="res://Assets/Images/Bedroom Reference.jpg"]
 after all that you've done today, you get tired so you go to bed.
 [end_timeline]
+
