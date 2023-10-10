@@ -26,7 +26,7 @@ GGS="*res://addons/ggs/classes/ggs_globals.gd"
 glossary/default_case_sensitive=true
 variables={
 "social_points": "global.social_points",
-"spoons": "global.spoons"
+"spoons": "Dialogic.VAR.global.spoons"
 }
 settings/text_speed=0.01
 text/skippable=true
